@@ -1,0 +1,12 @@
+a
+{
+	background-color: cyan;
+	color:white;
+	padding:15px 12px;
+	text-decoration: none;
+}
+a:hover
+{
+	background-color: white;
+	color:cyan;
+}
