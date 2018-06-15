@@ -1,0 +1,19 @@
+table
+{
+    font-size: 20px;
+    border:2px solid black;
+}
+input[type="text"]
+{
+    width: 100%;
+    font-size:18px;
+}
+
+input[type="submit"]:hover,buton[type="submit"]:hover
+{
+    background-color: white;
+}
+#tbbtn
+{
+    width: 100%;
+}

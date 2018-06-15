@@ -1,0 +1,17 @@
+<h2>Login Page</h2>
+<form >
+<table>
+  <tr>
+    <td>Username</td>
+    <td><input type="text" [(ngModel)]="u.username" name="username" placeholder="Enter Username"/></td>
+  </tr>
+  <tr>
+      <td>Password</td>
+      <td><input type="password" [(ngModel)]="u.password" name="password" placeholder="Enter Password"/></td>
+  </tr>
+  <tr>
+    <td><input type="submit" value="Login" (click)="login()"/></td>
+    <td><input type="reset" value="Reset"/></td>
+  </tr>
+</table>
+</form>

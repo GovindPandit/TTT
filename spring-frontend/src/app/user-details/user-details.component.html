@@ -1,0 +1,88 @@
+<div align="center" *ngIf="electedUser==null">
+    
+<div *ngIf="selectedUser==null">
+    <h2>Add User</h2>
+  <table border="1px solid black">
+    <tr>
+      <td>Username</td>
+      <td><input type="text" [(ngModel)]="user.username"/></td>
+    </tr>
+    <tr>
+      <td>Password</td>
+      <td><input type="text" [(ngModel)]="user.password"/></td>
+    </tr>
+    <tr>
+      <td>Phone Number</td>
+      <td><input type="text" [(ngModel)]="user.phone_number"/></td>
+    </tr>
+    <tr>
+      <td colspan="2"><input type="submit" value="Add" id="tbbtn"  (click)="addUser(user)"></td>
+    </tr>
+  </table>
+  </div>
+  
+<div  *ngIf="selectedUser!=null">
+  <h2>Update User</h2>
+<table border="1px solid black">
+  <tr>
+    <td>UserId</td>
+    <td><input type="text" [(ngModel)]="selectedUser.userid"/></td>
+  </tr>
+  <tr>
+    <td>Username</td>
+    <td><input type="text" [(ngModel)]="selectedUser.username"/></td>
+  </tr>
+  <tr>
+    <td>Password</td>
+    <td><input type="text" [(ngModel)]="selectedUser.password"/></td>
+  </tr>
+  <tr>
+    <td>Phone Number</td>
+    <td><input type="text" [(ngModel)]="selectedUser.phone_number"/></td>
+  </tr>
+  <tr>
+    <td colspan="2"><input type="submit" id="tbbtn" (click)="onUpdate(selectedUser)" value="Update"></td>
+  </tr>
+</table>
+</div>
+
+  <br><br>
+  <table border="1px solid black" >
+      <tr>
+        <th>Userid</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Phone Number</th>
+        <th>Edit | Delete | View</th>
+      </tr>
+      <tr *ngFor="let u of users" >
+        <td>{{u.userid}}</td>
+        <td>{{u.username}}</td>
+        <td>{{u.password}}</td>
+        <td>{{u.phone_number}}</td>
+        <td><input type="submit" (click)="onEdit(u)" value="Edit"><input type="submit" (click)="onDelete(u)" value="Delete"><input type="submit" (click)="onView(u)" value="View"></td>
+      </tr>      
+  </table>
+</div>
+
+<div *ngIf="electedUser!=null" align="center">
+  <h2>User Details</h2>
+  <table border="1px solid black">
+    <tr>
+      <td>User Id</td>
+      <td>{{electedUser.userid}}</td>
+    </tr>
+    <tr>
+      <td>User Name</td>
+      <td>{{electedUser.username}}</td>
+    </tr>   
+   <tr>
+      <td>Phone Number</td>
+      <td>{{electedUser.phone_number}}</td>
+    </tr>
+    <tr>
+      <td>Password</td>
+      <td>{{electedUser.password}}</td>
+    </tr>           
+  </table>  
+</div>

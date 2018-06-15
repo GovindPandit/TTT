@@ -1,0 +1,3 @@
+com\niit\controller\UserController.class
+com\niit\config\AppConext.class
+com\niit\config\WebAppInitializer.class
