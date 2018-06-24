@@ -1,0 +1,19 @@
+<form>
+  <table>
+    <tr>
+      <td>UserId</td>  
+      <td><input type="text" name="userid" [(ngModel)]="projectUser.userid"></td>  
+    </tr>  
+    <tr>
+        <td>Project Name</td>  
+        <td><input type="text" name="projectname" [(ngModel)]="projectUser.projectName"/></td>  
+    </tr> 
+    <tr>
+      <td>Project Description</td>  
+      <td><input type="text" name="description" [(ngModel)]="projectUser.description"></td>  
+    </tr> 
+    <tr>
+        <td colspan="2"><input type="submit" (click)="addProject(projectUser)" value="Assign"></td>   
+      </tr> 
+  </table>  
+</form>

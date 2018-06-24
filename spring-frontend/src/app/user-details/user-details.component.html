@@ -1,19 +1,68 @@
+<html>
+  <head>
+    <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+	
+  </head>
+  <body>
+  
+<h3 align="center">
+  <u>Role:- {{role}}</u><br>
+  <u>Welcome:- {{username}}</u>
+</h3>
+<div align="right" *ngIf="role!='tech mentor'">
+  <select style="width: auto;height:30px" [(ngModel)]="searchBy">
+    <option>userid</option>
+    <option >username</option>
+    <option>skills</option>
+    <option >role</option>
+  </select>
+  <input type="text" [(ngModel)]="search" style="width: auto" style="width: auto;height:30px">
+  <input type="submit" value="Search" (click)="searchUsers()" style="width: auto;height:30px"/>
+</div>
+
+<div align="right" *ngIf="role=='tech mentor'">
+  <select style="width: auto;height:30px" [(ngModel)]="projectstatus">
+    <option>Pending</option>
+    <option >Completed</option>
+  </select>
+  <input type="submit" value="Search" (click)="projectStatus(username)" style="width: auto;height:30px"/>
+</div>
+
 <div align="center" *ngIf="electedUser==null">
-    
-<div *ngIf="selectedUser==null">
+
+<div *ngIf="selectedUser==null  && role!='tech mentor' && role!='employee'">
     <h2>Add User</h2>
   <table border="1px solid black">
     <tr>
       <td>Username</td>
-      <td><input type="text" [(ngModel)]="user.username"/></td>
+      <td><input type="text" name="username" placeholder="Enter Username" [(ngModel)]="user.username"/></td>
     </tr>
     <tr>
       <td>Password</td>
-      <td><input type="text" [(ngModel)]="user.password"/></td>
+      <td><input type="password" name="password" placeholder="Enter Password" [(ngModel)]="user.password"/></td>
     </tr>
     <tr>
       <td>Phone Number</td>
-      <td><input type="text" [(ngModel)]="user.phone_number"/></td>
+      <td><input type="text" name="phone_number" placeholder="Enter Phone number" [(ngModel)]="user.phone_number"/></td>
+    </tr>
+    <tr>
+      <td>Role</td>
+      <td>
+        <select [(ngModel)]="user.role">
+          <option selected>tech mentor</option>
+          <option>employee</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Skills</td>
+      <td><input type="text" name="skills" placeholder="Enter Skills" [(ngModel)]="user.skills"/></td>
     </tr>
     <tr>
       <td colspan="2"><input type="submit" value="Add" id="tbbtn"  (click)="addUser(user)"></td>
@@ -21,10 +70,10 @@
   </table>
   </div>
   
-<div  *ngIf="selectedUser!=null">
+<div  *ngIf="selectedUser!=null && (role=='tech mentor' ||  role=='employee' ||  role=='hr')">
   <h2>Update User</h2>
 <table border="1px solid black">
-  <tr>
+  <tr >
     <td>UserId</td>
     <td><input type="text" [(ngModel)]="selectedUser.userid"/></td>
   </tr>
@@ -40,6 +89,23 @@
     <td>Phone Number</td>
     <td><input type="text" [(ngModel)]="selectedUser.phone_number"/></td>
   </tr>
+  <tr *ngIf="role=='hr'">
+    <td>Status</td>
+    <td><input type="text"  [(ngModel)]="selectedUser.status"/></td>
+  </tr>
+  <tr *ngIf="role=='hr'">
+    <td>Role</td>
+    <td>
+      <select [(ngModel)]="selectedUser.role" >
+        <option selected>tech mentor</option>
+        <option>employee</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Skills</td>
+    <td><input type="text" [(ngModel)]="selectedUser.skills"/></td>
+  </tr>
   <tr>
     <td colspan="2"><input type="submit" id="tbbtn" (click)="onUpdate(selectedUser)" value="Update"></td>
   </tr>
@@ -47,20 +113,53 @@
 </div>
 
   <br><br>
-  <table border="1px solid black" >
+  <!-- Username {{username}} -->
+ 
+  <table border="1px solid black" *ngIf="userss==null">
       <tr>
         <th>Userid</th>
         <th>Username</th>
         <th>Password</th>
         <th>Phone Number</th>
+        <th>Status</th>
+        <th>Role</th>
+        <th>Skills</th>
         <th>Edit | Delete | View</th>
       </tr>
-      <tr *ngFor="let u of users" >
-        <td>{{u.userid}}</td>
-        <td>{{u.username}}</td>
-        <td>{{u.password}}</td>
-        <td>{{u.phone_number}}</td>
-        <td><input type="submit" (click)="onEdit(u)" value="Edit"><input type="submit" (click)="onDelete(u)" value="Delete"><input type="submit" (click)="onView(u)" value="View"></td>
+      <tr *ngFor="let u of users">
+        <td *ngIf="(username==u.username || role=='hr')">{{u.userid}}</td>
+        <td *ngIf="username==u.username || role=='hr'">{{u.username}}</td>
+        <td *ngIf="username==u.username || role=='hr'">{{u.password}}</td>
+        <td *ngIf="username==u.username || role=='hr'">{{u.phone_number}}</td>
+        <td *ngIf="username==u.username || role=='hr'">{{u.status}}</td>
+        <td *ngIf="username==u.username || role=='hr'">{{u.role}}</td>
+        <td *ngIf="username==u.username || role=='hr'">{{u.skills}}</td>
+        <td *ngIf="(u.role=='hr' && role=='hr')"><input type="submit" *ngIf="username==u.username" (click)="onEdit(u)" value="Edit"><input type="submit" (click)="onView(u)" value="View"></td>
+        <td *ngIf="(u.role!='hr' &&  role=='hr') || (username==u.username && role!='hr')"><input type="submit" (click)="onEdit(u)" value="Edit"><input type="submit" (click)="onDelete(u)" value="Delete"><input type="submit" (click)="onView(u)" value="View"></td>
+        
+      </tr>      
+  </table>
+  
+  <table border="1px solid black" *ngIf="userss!=null">
+      <tr>
+        <th>Userid</th>
+        <th>Username</th>
+        <th>Phone Number</th>
+        <th>Status</th>
+        <th>Role</th>
+        <th>Skills</th>
+        <th>Edit | Delete | View</th>
+      </tr>
+      <tr *ngFor="let u of userss">
+        <td >{{u.userid}}</td>
+        <td >{{u.username}}</td>
+        <td >{{u.phone_number}}</td>
+        <td >{{u.status}}</td>
+        <td >{{u.role}}</td>
+        <td >{{u.skills}}</td>
+        <td *ngIf="(u.role=='hr' && role=='hr') || (role=='employee' && u.username!=username)"><input type="submit" *ngIf="username==u.username" (click)="onEdit(u)" value="Edit"><input type="submit" (click)="onView(u)" value="View"></td>
+        <td *ngIf="(u.role!='hr' &&  role=='hr') || (username==u.username && role!='hr')"><input type="submit" (click)="onEdit(u)" value="Edit"><input type="submit" (click)="onDelete(u)" value="Delete"><input type="submit" (click)="onView(u)" value="View"></td>
+        <td *ngIf="(u.role=='tech mentor' &&  role=='employee')"><input type="submit" (click)="assignProject(u)" value="Assign Project"></td>
       </tr>      
   </table>
 </div>
@@ -86,3 +185,5 @@
     </tr>           
   </table>  
 </div>
+</body>
+</html>

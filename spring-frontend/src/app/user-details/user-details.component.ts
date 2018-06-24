@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User , USERS } from '../user'
+import { User } from '../user'
 import { UserService } from  '../user.service'
+import { AssignProjectComponent } from '../assign-project/assign-project.component'
 
 @Component({
   selector: 'app-user-details',
@@ -9,23 +10,50 @@ import { UserService } from  '../user.service'
 })
 export class UserDetailsComponent implements OnInit {
   users:User[];
+  userss:User[];
+  assignmentProjectComponent:AssignProjectComponent;
   user:User=
   {
       userid:null,
       username:"",
       phone_number:"",
-      password:""
+      password:"",
+      status:"",
+      role:"",
+      skills:""
   }
   //1st way
   //users=USERS;
-  constructor(private userService:UserService) { }
+  role:string;
+  username=sessionStorage.getItem("userid");
+  searchBy:string;
+  search:string;
+  projectstatus:string;
   
+  constructor(private userService:UserService) { 
+    this.role=sessionStorage.getItem("role");
+    if(this.role==null || this.role=="")
+    {
+      alert("Please login first");
+      window.location.href = "http://localhost:4200/login";
+    }
+  }
+  
+  assignProject(us:User):void
+  {
+    sessionStorage.setItem("projectid",us.userid+"");
+    window.location.href = "http://localhost:4200/assignproject"
+    
+  }
   onDelete(userdetails:User):void
   {
       var status=confirm("Do you want to continue?");
       if(status)
       {
         this.userService.deleteUsers(userdetails).subscribe();
+        if(this.role=="hr")
+        window.location.href = "http://localhost:4200/welcome";
+        else
         window.location.href = "http://localhost:4200/home";
       }
   }
@@ -40,13 +68,13 @@ export class UserDetailsComponent implements OnInit {
   onUpdate(userdetails:User):void
   {
       this.userService.updateUsers(userdetails).subscribe();
-      window.location.href = "http://localhost:4200/home";
+      window.location.href = "http://localhost:4200/welcome";
   }
 
   addUser(userdetails:User):void
   {
       this.userService.addUsers(userdetails).subscribe();
-      window.location.href = "http://localhost:4200/home";
+      window.location.href = "http://localhost:4200/welcome";
   }
 
   selectedUser:User;
@@ -62,8 +90,17 @@ export class UserDetailsComponent implements OnInit {
     //3rd using observable
     this.userService.getUsers().subscribe(users => this.users =users);
   }
+  searchUsers(searchBy:string,search:string):void
+  {
+    this.userService.searchUsers(this.searchBy,this.search).subscribe(userss => this.userss =userss);
+  }
+  projectStatus(searchBy:string,search:string):void
+  {
+    this.userService.searchUsers(this.searchBy,this.search).subscribe(userss => this.userss =userss);
+  }
   ngOnInit() {
-    this.getUsers();
+	
+		this.getUsers();
   }
 
 }

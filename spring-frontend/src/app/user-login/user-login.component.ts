@@ -13,14 +13,19 @@ export class UserLoginComponent implements OnInit {
 
   constructor(private userService:UserService) { }
 u:any={}
+
   login() {
     
-        this.userService.loginClicked(this.u).subscribe(dbUser => this.dbUser = dbUser);  
+    this.userService.loginClicked(this.u).subscribe(dbUser => this.dbUser = dbUser);  
        
-     if(this.u.password==this.dbUser.password)
+    // if(this.dbUser.status==="NB")
+    // {
+    if(this.u.password===this.dbUser.password)
     {
+      sessionStorage.setItem("role", this.dbUser.role);
+      sessionStorage.setItem("userid", this.dbUser.username);
       alert("welcome "+this.dbUser.username);
-      window.location.href="http://localhost:4200/home";
+      window.location.href="http://localhost:4200/welcome";
     }
     else
     {
@@ -28,7 +33,11 @@ u:any={}
       
     }
   }
-
+  // else
+  // {
+  //     alert("your profile is not reviwed by hr yet or blocked !!!");
+  // }
+  
   onLoginClicked():void
   {
     

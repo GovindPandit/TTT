@@ -7,12 +7,18 @@ import { AppComponent } from './app.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { UserLoginComponent } from './user-login/user-login.component';
+import { RegisterUserComponent } from './register-user/register-user.component';
+import { UserHomeComponent } from './user-home/user-home.component';
+import { AssignProjectComponent } from './assign-project/assign-project.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserDetailsComponent,
     UserLoginComponent,
+    RegisterUserComponent,
+    UserHomeComponent,
+    AssignProjectComponent
   ],
   imports: [
     BrowserModule,

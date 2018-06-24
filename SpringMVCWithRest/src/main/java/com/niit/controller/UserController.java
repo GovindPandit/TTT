@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.niit.mobocart.Projects;
 import com.niit.mobocart.UserDetails;
 import com.niit.service.UserService;
 
@@ -30,11 +31,21 @@ public class UserController
 	{
 		userService.getuserDetails();
 		return new ResponseEntity<List<UserDetails>>(userService.getuserDetails(),HttpStatus.OK);
-	}	
+	}
+	
+	@GetMapping("/{searchBy}/{search}")
+	public ResponseEntity<List<UserDetails>> searchUser(@PathVariable("searchBy") String searchBy,@PathVariable("search") String search ) throws Exception 
+	{
+		System.out.println(searchBy+"\n");
+		System.out.println("search "+search);
+		userService.searchUser(searchBy, search);
+		return new ResponseEntity<List<UserDetails>>(userService.searchUser(searchBy, search),HttpStatus.OK);
+	}
+	
 	@PostMapping("/")
 	public ResponseEntity<Void> addUser(@RequestBody UserDetails user) throws Exception
 	{
-		userService.addUserDetails(user);
+		userService.addUserDetails(user,user.getRole());
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 	
@@ -53,7 +64,13 @@ public class UserController
 		}
 		return new ResponseEntity<UserDetails>(u,HttpStatus.OK);
 	}
-	
+
+	@PostMapping("/assignproject")
+	public ResponseEntity<Void> assignProject(@RequestBody Projects projects) throws Exception
+	{
+		userService.assignProject(projects.getUserid(),projects.getProjectName(), projects.getDescription());
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
 	
 	@DeleteMapping("/{userid}")
 	public ResponseEntity<Void> deleteUser(@PathVariable("userid") int  id) throws Exception
