@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class MyClass
 {
+	//
 	double amount=100.00;
 	int tran=1;
 	Scanner sc=new Scanner(System.in);
